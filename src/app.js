@@ -49,4 +49,3 @@ process.on('SIGINT', () => {
   console.log('Terminating timer.')
   timerPomodoro.killRunningTimer()
 })
-

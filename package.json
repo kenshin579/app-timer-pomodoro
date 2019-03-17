@@ -15,7 +15,7 @@
     "prepublish": "npm run compile",
     "start": "node lib/app.js",
     "test": "mocha --compilers js:babel-core/register",
-    "release:patch": "npm test && npm run lint && npm run compile && npm run coverage:lcov && npm version patch && npm publish"
+    "release:patch": "npm run lint && npm run compile && npm version patch && npm publish"
   },
   "repository": {
     "type": "git",

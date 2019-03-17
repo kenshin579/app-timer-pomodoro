@@ -1,12 +1,12 @@
-//default constants
+// default constants
 const defaultConfig = {
   programName: 'timer-pomodoro',
   // minuteStrFormat : '{0}:00',
   minuteStrFormat: '00:03',
-  maxCountTime: 25, //mins
-  maxBreakTime: 5,  //mins
+  maxCountTime: 25, // mins
+  maxBreakTime: 5, // mins
   maxSession: 4,
-  maxLongTermBreakTime: 15, //mins (15~30)
+  maxLongTermBreakTime: 15, // mins (15~30)
   // timeDisplayType: 'small',
   soundFilePath: 'Clock-chimes',
   MESSAGE: {

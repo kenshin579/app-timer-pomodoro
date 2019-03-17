@@ -14,7 +14,7 @@ const getStorePath = () => path.join(require('os').homedir(), '.pomodoro_timer.j
 const localStorage = require('piggy-bank')(getStorePath())
 const pkgUpdateNotifier = updateNotifier({ pkg })
 
-//notify updates
+// notify updates
 pkgUpdateNotifier.notify()
 
 class TimerPomodoro {
@@ -28,16 +28,16 @@ class TimerPomodoro {
   }
 
   run () {
-    //set pomodoro setting
+    // set pomodoro setting
     this._setPomodoroSetting(this._maxBreakTime, this._maxSession, this._runningMode)
 
     const currentSession = localStorage.get('completedSession')
     const completedBreakSession = localStorage.get('completedBreakSession')
     const sessionFormat = `Session ${currentSession} / ${this._maxSession}`
 
-    //start pomodoro timer
-    if (this._runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME
-      || this._runningMode === RUNNING_MODE.COUNTDOWN_TIME) {
+    // start pomodoro timer
+    if (this._runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME ||
+      this._runningMode === RUNNING_MODE.COUNTDOWN_TIME) {
       this.currentTimer.start()
 
       this._displayTicking(this.currentTimer, sessionFormat)
@@ -53,9 +53,9 @@ class TimerPomodoro {
             message: format(defaultConfig.MESSAGE.COUNTDOWN_TIME_FINISHED, this.currentTimer.getStartTime() / 60),
             icon: path.join(__dirname, '../images/pomodoro.png'),
             sound: fs.existsSync(os.homedir(), '/Library/Sounds/', defaultConfig.soundFilePath, '.mp3') ? defaultConfig.soundFilePath : 'Blow',
-            wait: true //not working
+            wait: true // not working
           },
-          function (err, response) {
+          function () {
             if (self._runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME) {
               self._breakTimer(self.currentTimer, completedBreakSession)
             }
@@ -91,10 +91,9 @@ class TimerPomodoro {
         message: format(defaultConfig.MESSAGE.BREAK_TIME_FINISHED, this._maxBreakTime / 60),
         icon: path.join(__dirname, `../images/break${completedBreakSession}.png`),
         sound: fs.existsSync(os.homedir(), '/Library/Sounds/', defaultConfig.soundFilePath, '.mp3') ? defaultConfig.soundFilePath : 'Blow',
-        wait: true //not working
+        wait: true // not working
       })
     })
-
   }
 
   _setPomodoroSetting (maxBreakTime, maxSession, runningMode) {
@@ -102,7 +101,7 @@ class TimerPomodoro {
     let completedBreakSession = localStorage.get('completedBreakSession')
     let longTermBreak = localStorage.get('longTermBreak')
 
-    //init
+    // init
     if (completedSession === null) {
       completedSession = 0
       localStorage.set('completedSession', completedSession, { overwrite: true })
@@ -119,15 +118,15 @@ class TimerPomodoro {
 
     localStorage.set('maxTotalSession', this._maxSession, { overwrite: true })
 
-    //need longterm break
+    // need longterm break
     if (completedBreakSession > completedSession && runningMode === RUNNING_MODE.BREAK_TIME) {
       console.log(defaultConfig.MESSAGE.EXCEEDED_BREAK_SESSION)
       process.exit()
     }
 
-    if (runningMode === RUNNING_MODE.BREAK_TIME
-      && !longTermBreak
-      && completedBreakSession >= maxSession) {
+    if (runningMode === RUNNING_MODE.BREAK_TIME &&
+      !longTermBreak &&
+      completedBreakSession >= maxSession) {
       if (maxBreakTime >= defaultConfig.maxLongTermBreakTime) {
         console.log('reset')
         localStorage.set('longTermBreak', true, { overwrite: true })
