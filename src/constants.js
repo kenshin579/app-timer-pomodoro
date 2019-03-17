@@ -1,16 +1,25 @@
 //default constants
 const defaultConfig = {
   programName: 'timer-pomodoro',
+  // minuteStrFormat : '{0}:00',
+  minuteStrFormat: '00:03',
   maxCountTime: 25, //mins
   maxBreakTime: 5,  //mins
   maxSession: 4,
-  longTermBreakTime: 15, //mins (15~30)
-  timeDisplayType: 'small',
+  maxLongTermBreakTime: 15, //mins (15~30)
+  // timeDisplayType: 'small',
   soundFilePath: 'Clock-chimes',
   MESSAGE: {
-    COUNTDOWN_TIME_FINISHED: '{0}분이 지났어요~~',
-    EXCEEDED_MAX_SESSION: '{0}분이 지났어요~~ 총{1}번이나 집중했어요. 조금 더 길게 쉴시간( {2}분 )입니다.',
+    COUNTDOWN_TIME_FINISHED: '{0}분동안 집중해서 작업하셨어요 ~~',
+    BREAK_TIME_FINISHED: '{0}분동안 쉬셨어요~~',
+    EXCEEDED_BREAK_SESSION: '쉬기보다는 더 집중해서 작업을 할 때입니다!!',
+    EXCEEDED_MAX_SESSION: '총{0}번 이상 집중해서 작업했습니다. 조금 더 길게 쉴시간({1}분)입니다.'
   }
 }
 
-export default defaultConfig
+const RUNNING_MODE = Object.freeze({
+  COUNTDOWN_TIME: Symbol('countdownTime'),
+  BREAK_TIME: Symbol('breakTime'),
+  COUNTDOWN_BREAK_TIME: Symbol('countdownBreakTime')
+})
+export { defaultConfig, RUNNING_MODE }
