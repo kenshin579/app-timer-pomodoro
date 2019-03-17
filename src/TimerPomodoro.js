@@ -49,17 +49,17 @@ class TimerPomodoro {
         localStorage.set('completedSession', currentSession + 1, { overwrite: true })
 
         notifier.notify({
-            title: pkg.name,
-            message: format(defaultConfig.MESSAGE.COUNTDOWN_TIME_FINISHED, this.currentTimer.getStartTime() / 60),
-            icon: path.join(__dirname, '../images/pomodoro.png'),
-            sound: fs.existsSync(os.homedir(), '/Library/Sounds/', defaultConfig.soundFilePath, '.mp3') ? defaultConfig.soundFilePath : 'Blow',
-            wait: true // not working
-          },
-          function () {
-            if (self._runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME) {
-              self._breakTimer(self.currentTimer, completedBreakSession)
-            }
+          title: pkg.name,
+          message: format(defaultConfig.MESSAGE.COUNTDOWN_TIME_FINISHED, this.currentTimer.getStartTime() / 60),
+          icon: path.join(__dirname, '../images/pomodoro.png'),
+          sound: fs.existsSync(os.homedir(), '/Library/Sounds/', defaultConfig.soundFilePath, '.mp3') ? defaultConfig.soundFilePath : 'Blow',
+          wait: true // not working
+        },
+        function () {
+          if (self._runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME) {
+            self._breakTimer(self.currentTimer, completedBreakSession)
           }
+        }
         )
       })
     }
