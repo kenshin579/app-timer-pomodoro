@@ -44,7 +44,7 @@ class TimerPomodoro {
 
       this.currentTimer.finish(() => {
         let self = this
-        this._writeToSingleLine(`Countdown Finished ✔︎\n`)
+        this._writeToSingleLine(`Countdown Finished ✔︎`)
 
         localStorage.set('completedSession', currentSession + 1, { overwrite: true })
 
@@ -76,14 +76,13 @@ class TimerPomodoro {
   }
 
   _breakTimer (currentTimer, completedBreakSession) {
-    console.log('completedBreakSession', completedBreakSession)
     currentTimer = new Timr(format(defaultConfig.minuteStrFormat, this._maxBreakTime))
     currentTimer.start()
 
     this._displayTicking(currentTimer)
 
     currentTimer.finish(() => {
-      this._writeToSingleLine(`Break Time Finished ✔︎\n`)
+      this._writeToSingleLine(`Break Time Finished ✔︎`)
       localStorage.set('completedBreakSession', completedBreakSession + 1, { overwrite: true })
 
       notifier.notify({
@@ -128,7 +127,6 @@ class TimerPomodoro {
       !longTermBreak &&
       completedBreakSession >= maxSession) {
       if (maxBreakTime >= defaultConfig.maxLongTermBreakTime) {
-        console.log('reset')
         localStorage.set('longTermBreak', true, { overwrite: true })
         localStorage.set('completedSession', 0, { overwrite: true })
         localStorage.set('completedBreakSession', 0, { overwrite: true })

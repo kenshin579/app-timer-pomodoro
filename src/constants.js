@@ -1,8 +1,7 @@
 // default constants
 const defaultConfig = {
   programName: 'timer-pomodoro',
-  // minuteStrFormat : '{0}:00',
-  minuteStrFormat: '00:03',
+  minuteStrFormat : '{0}:00',
   maxCountTime: 25, // mins
   maxBreakTime: 5, // mins
   maxSession: 4,

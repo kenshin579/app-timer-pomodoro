@@ -6,7 +6,7 @@ import TimerPomodoro from './TimerPomodoro'
 import { defaultConfig, RUNNING_MODE } from './constants'
 
 var program = commander
-  .version('0.0.1')
+  .version(require('../package.json').version)
   .name(defaultConfig.programName)
   .option('-t, --time <n>', `number of mins for countdown (default ${defaultConfig.maxCountTime})`, parseInt)
   .option('-b, --break <n>', `number of mins for break time (default ${defaultConfig.maxBreakTime})`, parseInt)
@@ -41,7 +41,6 @@ userConfig.maxSession = commander.session || defaultConfig.maxSession
 
 // userConfig.timeDisplayType = commander.dtype || constants.dtype
 
-console.log('userConfig', userConfig)
 const timerPomodoro = new TimerPomodoro(userConfig).run()
 
 process.on('SIGINT', () => {
