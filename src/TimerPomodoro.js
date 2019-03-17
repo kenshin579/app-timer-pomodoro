@@ -49,17 +49,17 @@ class TimerPomodoro {
         localStorage.set('completedSession', currentSession, { overwrite: true })
 
         notifier.notify({
-            title: pkg.name,
-            message: format(defaultConfig.MESSAGE.COUNTDOWN_TIME_FINISHED, this._maxCountTime),
-            icon: path.join(__dirname, '../images/pomodoro.png'),
-            sound: fs.existsSync(os.homedir(), '/Library/Sounds/', defaultConfig.soundFilePath, '.mp3') ? defaultConfig.soundFilePath : 'Blow',
-            wait: true // not working
-          },
-          function () {
-            if (self._runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME) {
-              self._breakTimer(self.currentTimer, completedBreakSession)
-            }
+          title: pkg.name,
+          message: format(defaultConfig.MESSAGE.COUNTDOWN_TIME_FINISHED, this._maxCountTime),
+          icon: path.join(__dirname, '../images/pomodoro.png'),
+          sound: fs.existsSync(os.homedir(), '/Library/Sounds/', defaultConfig.soundFilePath, '.mp3') ? defaultConfig.soundFilePath : 'Blow',
+          wait: true // not working
+        },
+        function () {
+          if (self._runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME) {
+            self._breakTimer(self.currentTimer, completedBreakSession)
           }
+        }
         )
       })
     }
@@ -119,7 +119,7 @@ class TimerPomodoro {
 
     localStorage.set('maxTotalSession', this._maxSession, { overwrite: true })
 
-    //i think i need unit test for this (a little bit confused myself)
+    // i think i need unit test for this (a little bit confused myself)
     if (runningMode === RUNNING_MODE.BREAK_TIME &&
       !longTermBreak &&
       completedBreakSession >= maxSession) {
@@ -139,9 +139,9 @@ class TimerPomodoro {
       } else if (completedBreakSession >= completedSession && runningMode === RUNNING_MODE.BREAK_TIME) {
         console.log(defaultConfig.MESSAGE.EXCEEDED_BREAK_SESSION)
         process.exit()
-      } else if (completedBreakSession < completedSession
-        && (runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME
-          || runningMode === RUNNING_MODE.COUNTDOWN_TIME)) {
+      } else if (completedBreakSession < completedSession &&
+        (runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME ||
+          runningMode === RUNNING_MODE.COUNTDOWN_TIME)) {
         console.log(format(defaultConfig.MESSAGE.EXCEEDED_COUNTDOWN_SESSION, defaultConfig.maxBreakTime))
         process.exit()
       }
