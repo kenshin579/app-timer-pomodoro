@@ -31,10 +31,11 @@ class TimerPomodoro {
     // set pomodoro setting
     this._setPomodoroSetting(this._maxBreakTime, this._maxSession, this._runningMode)
 
-    const currentSession = localStorage.get('completedSession')
+    const currentSession = localStorage.get('completedSession') + 1
     const completedBreakSession = localStorage.get('completedBreakSession')
     const sessionFormat = `Session ${currentSession} / ${this._maxSession}`
 
+    let self = this
     // start pomodoro timer
     if (this._runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME ||
       this._runningMode === RUNNING_MODE.COUNTDOWN_TIME) {
@@ -43,29 +44,28 @@ class TimerPomodoro {
       this._displayTicking(this.currentTimer, sessionFormat)
 
       this.currentTimer.finish(() => {
-        let self = this
         this._writeToSingleLine(`Countdown Finished ✔︎`)
 
-        localStorage.set('completedSession', currentSession + 1, { overwrite: true })
+        localStorage.set('completedSession', currentSession, { overwrite: true })
 
         notifier.notify({
-          title: pkg.name,
-          message: format(defaultConfig.MESSAGE.COUNTDOWN_TIME_FINISHED, this._maxCountTime),
-          icon: path.join(__dirname, '../images/pomodoro.png'),
-          sound: fs.existsSync(os.homedir(), '/Library/Sounds/', defaultConfig.soundFilePath, '.mp3') ? defaultConfig.soundFilePath : 'Blow',
-          wait: true // not working
-        },
-        function () {
-          if (self._runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME) {
-            self._breakTimer(self.currentTimer, completedBreakSession)
+            title: pkg.name,
+            message: format(defaultConfig.MESSAGE.COUNTDOWN_TIME_FINISHED, this._maxCountTime),
+            icon: path.join(__dirname, '../images/pomodoro.png'),
+            sound: fs.existsSync(os.homedir(), '/Library/Sounds/', defaultConfig.soundFilePath, '.mp3') ? defaultConfig.soundFilePath : 'Blow',
+            wait: true // not working
+          },
+          function () {
+            if (self._runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME) {
+              self._breakTimer(self.currentTimer, completedBreakSession)
+            }
           }
-        }
         )
       })
     }
 
     if (this._runningMode === RUNNING_MODE.BREAK_TIME) {
-      this._breakTimer(this.currentTimer, completedBreakSession)
+      this.currentTimer = this._breakTimer(this.currentTimer, completedBreakSession)
     }
 
     return {
@@ -93,6 +93,8 @@ class TimerPomodoro {
         wait: true // not working
       })
     })
+
+    return currentTimer
   }
 
   _setPomodoroSetting (maxBreakTime, maxSession, runningMode) {
@@ -101,15 +103,15 @@ class TimerPomodoro {
     let longTermBreak = localStorage.get('longTermBreak')
 
     // init
-    if (completedSession === null) {
+    if (completedSession === undefined) {
       completedSession = 0
       localStorage.set('completedSession', completedSession, { overwrite: true })
     }
-    if (completedBreakSession === null) {
+    if (completedBreakSession === undefined) {
       completedBreakSession = 0
       localStorage.set('completedBreakSession', completedBreakSession, { overwrite: true })
     }
-    if (longTermBreak === null || longTermBreak) {
+    if (longTermBreak === undefined || longTermBreak) {
       longTermBreak = false
       localStorage.set('longTermBreak', longTermBreak, { overwrite: true })
       localStorage.set('completedBreakSession', 0, { overwrite: true })
@@ -117,12 +119,7 @@ class TimerPomodoro {
 
     localStorage.set('maxTotalSession', this._maxSession, { overwrite: true })
 
-    // need longterm break
-    if (completedBreakSession > completedSession && runningMode === RUNNING_MODE.BREAK_TIME) {
-      console.log(defaultConfig.MESSAGE.EXCEEDED_BREAK_SESSION)
-      process.exit()
-    }
-
+    //i think i need unit test for this (a little bit confused myself)
     if (runningMode === RUNNING_MODE.BREAK_TIME &&
       !longTermBreak &&
       completedBreakSession >= maxSession) {
@@ -131,11 +128,23 @@ class TimerPomodoro {
         localStorage.set('completedSession', 0, { overwrite: true })
         localStorage.set('completedBreakSession', 0, { overwrite: true })
       }
-    }
-
-    if (completedSession >= maxSession && maxBreakTime < defaultConfig.maxLongTermBreakTime) {
-      console.log(format(defaultConfig.MESSAGE.EXCEEDED_MAX_SESSION, maxSession, defaultConfig.maxLongTermBreakTime))
-      process.exit()
+      if (completedSession >= maxSession && maxBreakTime < defaultConfig.maxLongTermBreakTime) {
+        console.log(format(defaultConfig.MESSAGE.EXCEEDED_MAX_SESSION, maxSession, defaultConfig.maxLongTermBreakTime))
+        process.exit()
+      }
+    } else {
+      if (completedSession >= maxSession && maxBreakTime < defaultConfig.maxLongTermBreakTime) {
+        console.log(format(defaultConfig.MESSAGE.EXCEEDED_MAX_SESSION, maxSession, defaultConfig.maxLongTermBreakTime))
+        process.exit()
+      } else if (completedBreakSession >= completedSession && runningMode === RUNNING_MODE.BREAK_TIME) {
+        console.log(defaultConfig.MESSAGE.EXCEEDED_BREAK_SESSION)
+        process.exit()
+      } else if (completedBreakSession < completedSession
+        && (runningMode === RUNNING_MODE.COUNTDOWN_BREAK_TIME
+          || runningMode === RUNNING_MODE.COUNTDOWN_TIME)) {
+        console.log(format(defaultConfig.MESSAGE.EXCEEDED_COUNTDOWN_SESSION, defaultConfig.maxBreakTime))
+        process.exit()
+      }
     }
   }
 
