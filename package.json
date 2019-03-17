@@ -4,7 +4,7 @@
   "description": "Simple counting down console pomodoro program.",
   "preferGlobal": true,
   "bin": {
-    "timer-pomodoro": "bin/app.js"
+    "timer-pomodoro": "lib/app.js"
   },
   "scripts": {
     "compile": "babel -d lib/ src/",
