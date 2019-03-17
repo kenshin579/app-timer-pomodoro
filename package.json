@@ -1,6 +1,6 @@
 {
   "name": "timer-pomodoro",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple counting down console pomodoro program.",
   "preferGlobal": true,
   "bin": {
