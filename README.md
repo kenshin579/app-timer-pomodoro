@@ -12,6 +12,7 @@
 - [Install](#Install)
 - [Usage](#Usage)
 - [Todo](#Todo)
+- [References](#References)
 - [License](#License)
 
 ## Install
@@ -70,6 +71,10 @@ $ timer-pomodoro -t 20 -b 5
 - [ ] Localize pop-up messages (only Korean available)
 - [ ] Add option to display timer differently (ex. bigger font)
 
+## References
+* console-countdown, https://www.npmjs.com/package/console-countdown
+* pomd, https://www.npmjs.com/package/pomd
+* pomodoro, https://www.npmjs.com/package/pomodoro
 
 ## License
 MIT   
