@@ -50,7 +50,7 @@ class TimerPomodoro {
 
         notifier.notify({
           title: pkg.name,
-          message: format(defaultConfig.MESSAGE.COUNTDOWN_TIME_FINISHED, this.currentTimer.getStartTime() / 60),
+          message: format(defaultConfig.MESSAGE.COUNTDOWN_TIME_FINISHED, this._maxCountTime),
           icon: path.join(__dirname, '../images/pomodoro.png'),
           sound: fs.existsSync(os.homedir(), '/Library/Sounds/', defaultConfig.soundFilePath, '.mp3') ? defaultConfig.soundFilePath : 'Blow',
           wait: true // not working
@@ -87,7 +87,7 @@ class TimerPomodoro {
 
       notifier.notify({
         title: pkg.name,
-        message: format(defaultConfig.MESSAGE.BREAK_TIME_FINISHED, this._maxBreakTime / 60),
+        message: format(defaultConfig.MESSAGE.BREAK_TIME_FINISHED, this._maxBreakTime),
         icon: path.join(__dirname, `../images/break${completedBreakSession}.png`),
         sound: fs.existsSync(os.homedir(), '/Library/Sounds/', defaultConfig.soundFilePath, '.mp3') ? defaultConfig.soundFilePath : 'Blow',
         wait: true // not working
