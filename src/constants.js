@@ -1,5 +1,5 @@
 // default constants
-const defaultConfig = {
+export const defaultConfig = {
   programName: 'timer-pomodoro',
   minuteStrFormat: '{0}:00',
   maxCountTime: 25, // mins
@@ -17,9 +17,8 @@ const defaultConfig = {
   }
 }
 
-const RUNNING_MODE = Object.freeze({
+export const RUNNING_MODE = Object.freeze({
   COUNTDOWN_TIME: Symbol('countdownTime'),
   BREAK_TIME: Symbol('breakTime'),
   COUNTDOWN_BREAK_TIME: Symbol('countdownBreakTime')
 })
-export { defaultConfig, RUNNING_MODE }
