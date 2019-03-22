@@ -1,14 +1,14 @@
 import { defaultConfig, RUNNING_MODE } from './constants'
 
-const path = require('path')
-const fs = require('fs')
-const os = require('os')
+import path from 'path'
+import fs from 'fs'
+import os from 'os'
 
-const Timr = require('timrjs')
-const notifier = require('node-notifier')
-const updateNotifier = require('update-notifier')
-const format = require('string-template')
-const pkg = require('../package.json')
+import Timr from 'timrjs'
+import notifier from 'node-notifier'
+import updateNotifier from 'update-notifier'
+import format from 'string-template'
+import pkg from '../package.json'
 
 const getStorePath = () => path.join(require('os').homedir(), '.pomodoro_timer.json')
 const localStorage = require('piggy-bank')(getStorePath())
