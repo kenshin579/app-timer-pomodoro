@@ -55,24 +55,24 @@ class TimerPomodoro {
         currentSession = currentSession + 1
 
         notifier.notify({
-            title: pkg.name,
-            message: format(constants.MESSAGE.COUNTDOWN_TIME_FINISHED, this._maxCountTime),
-            icon: path.join(__dirname, '../images/pomodoro.png'),
-            sound: fs.existsSync(os.homedir(), '/Library/Sounds/', constants.soundFileForCountDown, '.mp3') ? constants.soundFileForCountDown : 'Blow',
-            notifyTimeout: constants.notifyTimeout,
-            wait: true // not working
-          },
-          function () {
-            self.currentTimer.stop()
+          title: pkg.name,
+          message: format(constants.MESSAGE.COUNTDOWN_TIME_FINISHED, this._maxCountTime),
+          icon: path.join(__dirname, '../images/pomodoro.png'),
+          sound: fs.existsSync(os.homedir(), '/Library/Sounds/', constants.soundFileForCountDown, '.mp3') ? constants.soundFileForCountDown : 'Blow',
+          notifyTimeout: constants.notifyTimeout,
+          wait: true // not working
+        },
+        function () {
+          self.currentTimer.stop()
 
-            if (currentSession <= self._maxSession) {
-              self._pomodoroTimer(currentSession)
-            }
-
-            if (self._maxBreakTime) {
-              self._breakTimer(self.currentTimer)
-            }
+          if (currentSession <= self._maxSession) {
+            self._pomodoroTimer(currentSession)
           }
+
+          if (self._maxBreakTime) {
+            self._breakTimer(self.currentTimer)
+          }
+        }
         )
       })
     }

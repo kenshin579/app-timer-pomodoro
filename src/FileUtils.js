@@ -16,10 +16,10 @@ export default class FileUtils {
     if (fs.existsSync(srcDir)) {
       fs.readdirSync(srcDir).forEach(file => {
         let srcFile = srcDir + '/' + file
-        fs.copyFile(srcFile, dstDir + '/' + file, (err => {
+        fs.copyFile(srcFile, dstDir + '/' + file, err => {
           if (err) throw err
           // console.info('copying ', srcFile, 'sound file to', dstDir)
-        }))
+        })
       })
     }
   }
