@@ -1,6 +1,6 @@
 {
   "name": "timer-pomodoro",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple counting down console pomodoro program.",
   "preferGlobal": true,
   "bin": {
@@ -56,7 +56,9 @@
     "standard": "^12.0.0"
   },
   "standard": {
-    "env": [ "mocha" ]
+    "env": [
+      "mocha"
+    ]
   },
   "babel": {
     "presets": [
