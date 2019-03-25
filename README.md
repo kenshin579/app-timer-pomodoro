@@ -29,13 +29,6 @@ $ cd app-timer-pomodoro
 $ npm install
 ```
 
-If you want to use sound file (ex.'Clock-chimes') instead of using the default system, then copy the  
-sound file to the following location those of you who are using the MacOS.   
-
-```sh
-$ cp /usr/local/lib/node_modules/timer-pomodoro/sound/Clock-chimes.mp3 ~/Library/Sounds
-```
-
 ## Usage
 You can type `timer-pomodoro` to see the help usage:
 
@@ -45,15 +38,19 @@ Usage: timer-pomodoro [options]
 
 Options:
   -V, --version      output the version number
-  -t, --time <n>     number of mins for countdown (default 25)
-  -b, --break <n>    number of mins for break time (default 5)
-  -s, --session <n>  the max number of sessions for long-term break (default: 4)
+  -t, --time [n]     the number of mins for countdown (default: 25)
+  -b, --break [n]    the number of mins for break time (default: 5)
+  -l, --long [n]     the number of mins for long-term break (default: 15)
+  -s, --session [n]  the max number of sessions for long-term break (default: 4)
   -h, --help         output usage information
 
 Examples:
-  $ timer-pomodoro -h
-  $ timer-pomodoro -t 20
-  $ timer-pomodoro -t 20 -b 5
+  $ timer-pomodoro -h : show help usage
+  $ timer-pomodoro -t : start 25 mins countdown timer
+  $ timer-pomodoro -t 30 : start 30 mins countdown timer
+  $ timer-pomodoro -t -b : start countdown and break timer with default value
+  $ timer-pomodoro -t 25 -b 10 : start 25 mins countdown timer and take 10 mins break
+  $ timer-pomodoro -t 25 -b 10 -s 5: start 25 mins countdown timer and take 10 mins break (repeats 5 times)
 ```
 
 You can start Pomdoro timer of 20 minutes : 

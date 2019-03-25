@@ -3,24 +3,25 @@
 
 import commander from 'commander'
 import TimerPomodoro from './TimerPomodoro'
-import { defaultConfig, RUNNING_MODE } from './constants'
+import constants from './constants'
 
 var program = commander
   .version(require('../package.json').version)
-  .name(defaultConfig.programName)
-  .option('-t, --time <n>', `number of mins for countdown (default ${defaultConfig.maxCountTime})`, parseInt)
-  .option('-b, --break <n>', `number of mins for break time (default ${defaultConfig.maxBreakTime})`, parseInt)
-  .option('-s, --session <n>', `the max number of sessions for long-term break`, parseInt, defaultConfig.maxSession)
-  .option('--stats', `show currrent stats`)
-  .option('-f, --force', `ignore current setting and start the timer`)
+  .name(constants.programName)
+  .option('-t, --time [n]', `the number of mins for countdown (default: ${constants.maxCountTime})`, parseInt)
+  .option('-b, --break [n]', `the number of mins for break time (default: ${constants.maxBreakTime})`, parseInt)
+  .option('-l, --long [n]', `the number of mins for long-term break (default: ${constants.maxLongTermBreakTime})`, parseInt)
+  .option('-s, --session [n]', `the max number of sessions for long-term break (default: ${constants.maxSession})`, parseInt)
   // .option('-d, --dtype <dtype>', 'select display type (big, small) for time format', /^(big|small)$/i, constants.timeDisplayType)
   .on('--help', function () {
     console.log('')
     console.log('Examples:')
-    console.log(`  $ ${defaultConfig.programName} -h : show help usage`)
-    console.log(`  $ ${defaultConfig.programName} -t 25 : start 25 mins countdown timer`)
-    console.log(`  $ ${defaultConfig.programName} -t 25 -b 5 : start 25 mins countdown timer and take 5 mins break`)
-    console.log(`  $ ${defaultConfig.programName} -f -t 25 -b 5 : ignore current setting and just start the timer`)
+    console.log(`  $ ${constants.programName} -h : show help usage`)
+    console.log(`  $ ${constants.programName} -t : start 25 mins countdown timer`)
+    console.log(`  $ ${constants.programName} -t 30 : start 30 mins countdown timer`)
+    console.log(`  $ ${constants.programName} -t -b : start countdown and break timer with default value`)
+    console.log(`  $ ${constants.programName} -t 25 -b 10 : start 25 mins countdown timer and take 10 mins break`)
+    console.log(`  $ ${constants.programName} -t 25 -b 10 -s 5: start 25 mins countdown timer and take 10 mins break (repeats 5 times)`)
   })
   .parse(process.argv)
 
@@ -30,19 +31,7 @@ if (process.argv.length <= 2) {
   process.exit()
 }
 
-if (commander.time && commander.break) {
-  userConfig.runningMode = RUNNING_MODE.COUNTDOWN_BREAK_TIME
-} else if (commander.time) {
-  userConfig.runningMode = RUNNING_MODE.COUNTDOWN_TIME
-} else if (commander.break) {
-  userConfig.runningMode = RUNNING_MODE.BREAK_TIME
-}
-
-userConfig.maxCountTime = commander.time || defaultConfig.maxCountTime
-userConfig.maxBreakTime = commander.break || defaultConfig.maxBreakTime
-userConfig.maxSession = commander.session || defaultConfig.maxSession
-
-// userConfig.timeDisplayType = commander.dtype || constants.dtype
+createUserConfig()
 
 const timerPomodoro = new TimerPomodoro(userConfig).run()
 
@@ -51,3 +40,38 @@ process.on('SIGINT', () => {
   console.log('Terminating timer.')
   timerPomodoro.killRunningTimer()
 })
+
+function createUserConfig () {
+  if (commander.time) {
+    if (Number.isInteger(commander.time)) {
+      userConfig.maxCountTime = commander.time
+    } else {
+      userConfig.maxCountTime = constants.maxCountTime
+    }
+  }
+
+  if (commander.break) {
+    if (Number.isInteger(commander.break)) {
+      userConfig.maxBreakTime = commander.break
+    } else {
+      userConfig.maxBreakTime = constants.maxBreakTime
+    }
+  }
+
+  if (commander.long) {
+    if (Number.isInteger(commander.long)) {
+      userConfig.maxLongTermBreakTime = commander.long
+    } else {
+      userConfig.maxLongTermBreakTime = constants.maxLongTermBreakTime
+    }
+  }
+
+  if (commander.session) {
+    if (Number.isInteger(commander.session)) {
+      userConfig.maxSession = commander.session
+    } else {
+      userConfig.maxSession = constants.maxSession
+    }
+  }
+  // userConfig.timeDisplayType = commander.dtype || constants.dtype
+}
